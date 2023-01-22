@@ -15,6 +15,12 @@ public class Main {
 
     }
 
+    /**
+     * Interface for logging in to a bank ATM
+     * @param bank Currently selected bank
+     * @param scanner scanner object
+     * @return Currently logged-in user
+     */
     public static User displayLoginInterface(Bank bank, Scanner scanner) {
         long userId;
         String password, userIdTemp;
@@ -38,6 +44,11 @@ public class Main {
         return authenticatedUser;
     }
 
+    /**
+     * Interface which allows user to navigate in ATM system
+     * @param user Currently logged-in user
+     * @param scanner scanner object
+     */
     public static void displayUserInterface(User user, Scanner scanner) {
         int input = 0;
         do {
