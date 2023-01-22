@@ -2,10 +2,19 @@ import java.util.Scanner;
 
 public class BankController {
 
+    /**
+     * This method displays summary for all the accounts of provided user instance
+     * @param user provided user instance
+     */
     public static void displayAccountInformation(User user) {
         user.displayAccountsInfo();
     }
 
+    /**
+     * This method calls a display of transaction history for a given account which is determined by user's choice
+     * @param user  provided user instance, who's accounts are eligible for display
+     * @param scanner provided scanner instance for use in whichAccount()
+     */
     public static void displayAccountTransactionHistory(User user, Scanner scanner) {
         int accountIndex = whichAccount(user, scanner);
 
@@ -14,11 +23,16 @@ public class BankController {
                 .showTransactionHistory();
     }
 
-
+    /**
+     * This method allows to deposit a certain amount (greater than zero) and then adds the corresponding transaction
+     * to the adequate account
+     * @param user provided user instance, who's accounts are eligible for deposit
+     * @param scanner provided scanner instance
+     */
     public static void deposit(User user, Scanner scanner) {
         int accountIndex = whichAccount(user, scanner);
-        double amount = 0;
-        String message = "";
+        double amount;
+        String message;
         do {
             System.out.println("Enter the amount to deposit on your account: ");
             System.out.println("(minimal value of (0.01\u20AC)");
@@ -36,13 +50,18 @@ public class BankController {
                 .addTransaction(amount, message);
     }
 
+    /**
+     * This method allows to withdraw a certain amount (greater than zero and smaller than current balance of the account)
+     * and then adds the corresponding transaction to the adequate account
+     * @param user provided user instance, who's accounts are eligible for withdraw
+     * @param scanner provided scanner instance
+     */
     public static void withdraw(User user, Scanner scanner) {
         int accountIndex = whichAccount(user, scanner);
         final double MAX_AMOUNT = user.getAccountsList().get(accountIndex).getBalance();
-        double amount = 0;
-        String message = "";
+        double amount;
+        String message;
         boolean valid;
-
         do {
             System.out.println("Enter the amount to withdraw from your account: ");
             System.out.printf("(maximum value of %.02f\u20AC possible)\n", MAX_AMOUNT);
@@ -68,9 +87,16 @@ public class BankController {
                 .addTransaction(-1 * amount, message);
     }
 
+    /**
+     * This method allows to transfer a certain amount (greater than zero and smaller than current balance of the
+     * selected account) between two accounts of the same user and then adds the corresponding transactions
+     * to the adequate accounts
+     * @param user provided user instance, who's accounts are eligible for transfer
+     * @param scanner provided scanner instance
+     */
     public static void transfer(User user, Scanner scanner) {
         int fromAccountIndex, toAccountIndex;
-        double amount = 0;
+        double amount;
         boolean valid = false;
         do {
             System.out.println("Please provide which account you want to transfer from: ");
@@ -86,7 +112,6 @@ public class BankController {
 
         valid = false;
         final double MAX_AMOUNT = user.getAccountsList().get(fromAccountIndex).getBalance();
-
         do {
             System.out.println("Enter the amount to transfer from your account: ");
             System.out.printf("(maximum value of %.02f\u20AC possible)\n", MAX_AMOUNT);
@@ -111,6 +136,12 @@ public class BankController {
                 .addTransaction(amount, String.format("Transferred from account %s to this account", user.getAccountsList().get(fromAccountIndex).getType()));
     }
 
+    /**
+     * This method allows you to select the account index to which the operation is applied
+     * @param user provided user instance, who's accounts are eligible for choosing
+     * @param scanner provided scanner instance
+     * @return account's index which was chosen by the user to apply a certain operation
+     */
     public static int whichAccount(User user, Scanner scanner) {
         int accountIndex;
         boolean valid = false;
